@@ -7,9 +7,13 @@ import java.util.HashSet;
  * Created by Андрей on 25.05.2016.
  */
 public class DeserializatorFromText {
-    public static HashSet<Author> authors;
-    public static HashSet<Album> albums;
-    public static HashSet<Song> songs;
+    private static HashSet<Author> authors;
+    private static HashSet<Album> albums;
+    private static HashSet<Song> songs;
+
+    public static HashSet<Author> getAuthors(){
+        return authors;
+    }
 
     public static void read(File fileIn) {
 

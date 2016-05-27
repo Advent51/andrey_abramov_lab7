@@ -1,7 +1,6 @@
 package com.adventorium.lab7;
 
-import com.adventorium.lab7.utils.NonserializableStart;
-import com.adventorium.lab7.utils.SerializableStart;
+import com.adventorium.lab7.utils.LabStarter;
 
 /**
  * This is a music catalog model
@@ -9,9 +8,6 @@ import com.adventorium.lab7.utils.SerializableStart;
  */
 public class Main {
     public static void main(String[] args) {
-
-        NonserializableStart nonserializableStart = new NonserializableStart();
-        nonserializableStart.damagedFileDeserialization();
-        SerializableStart serializableStart = new SerializableStart();
+        LabStarter labStarter = new LabStarter();
     }
 }
