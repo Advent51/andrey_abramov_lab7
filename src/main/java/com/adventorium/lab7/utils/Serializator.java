@@ -1,4 +1,4 @@
-package com.adventorium.lab7.serializable;
+package com.adventorium.lab7.utils;
 
 import java.io.*;
 

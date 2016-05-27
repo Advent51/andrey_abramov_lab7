@@ -1,6 +1,6 @@
-package com.adventorium.lab7;
+package com.adventorium.lab7.utils;
 
-import com.adventorium.lab7.nonserializable.*;
+import com.adventorium.lab7.music.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * Created by Андрей on 25.05.2016.
  */
 public class NonserializableStart {
-    NonserializableStart(){
+    public NonserializableStart(){
         System.out.println(System.getProperty("user.home") + "\\Downloads\\OutTest.txt");
 
         Random random = new Random();
@@ -60,9 +60,13 @@ public class NonserializableStart {
             fileOut.delete();
         }
 
-        authors.forEach((object) -> Serializator.write(object, fileOut));
-        Deserializator.read(fileOut);
-        Deserializator.authors.forEach((object) -> Serializator.write(object, fileOutDeser));
+        if (fileOutDeser.exists()) {
+            fileOutDeser.delete();
+        }
+
+        authors.forEach((object) -> SerializatorIntoText.write(object, fileOut));
+        DeserializatorFromText.read(fileOut);
+        DeserializatorFromText.authors.forEach((object) -> SerializatorIntoText.write(object, fileOutDeser));
 
 
         File fileOutDamaged = new File(System.getProperty("user.home") + "/Downloads/OutTestDamaged.txt");
@@ -81,7 +85,7 @@ public class NonserializableStart {
         if (fileOutDamagedDeser.exists()) {
             fileOutDamagedDeser.delete();
         }
-        Deserializator.read(fileOutDamaged);
-        Deserializator.authors.forEach((object) -> Serializator.write(object, fileOutDamagedDeser));
+        DeserializatorFromText.read(fileOutDamaged);
+        DeserializatorFromText.authors.forEach((object) -> SerializatorIntoText.write(object, fileOutDamagedDeser));
     }
 }

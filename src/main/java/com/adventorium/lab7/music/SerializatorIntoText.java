@@ -1,11 +1,11 @@
-package com.adventorium.lab7.nonserializable;
+package com.adventorium.lab7.music;
 
 import java.io.*;
 
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Serializator {
+public class SerializatorIntoText {
     public static void write(Object object, File filePath) {
 
         try (PrintWriter out = new PrintWriter(
@@ -13,16 +13,16 @@ public class Serializator {
                         new FileWriter(filePath, true)), true)) {
 
             if (object instanceof Author) {
-                out.println("Author: " + ((Author) object).name);
-                ((Author) object).albums.forEach((Album album) -> Serializator.write(album, filePath));
+                out.println("Author: " + ((Author) object).getName());
+                ((Author) object).albums.forEach((Album album) -> SerializatorIntoText.write(album, filePath));
             } else if (object instanceof Album) {
-                out.println("\tAlbum: " + ((Album) object).name);
+                out.println("\tAlbum: " + ((Album) object).getName());
                 out.print("\t\tGenre: ");
                 ((Album) object).genres.forEach((String genre) -> out.print(genre + " "));
                 out.println();
-                ((Album) object).songs.forEach((Song song) -> Serializator.write(song, filePath));
+                ((Album) object).songs.forEach((Song song) -> SerializatorIntoText.write(song, filePath));
             } else if (object instanceof Song) {
-                out.println("\t\t\t" + "Song: " + ((Song) object).name + "\n\t\t\t\tDuration: " + ((Song) object).duration);
+                out.println("\t\t\t" + "Song: " + ((Song) object).getName() + "\n\t\t\t\tDuration: " + ((Song) object).getDuration());
             } else {
                 System.out.println("Wrong class");
             }

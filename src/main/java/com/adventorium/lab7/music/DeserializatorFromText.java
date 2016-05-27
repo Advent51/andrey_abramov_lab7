@@ -1,4 +1,4 @@
-package com.adventorium.lab7.nonserializable;
+package com.adventorium.lab7.music;
 
 import java.io.*;
 import java.util.HashSet;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Deserializator {
+public class DeserializatorFromText {
     public static HashSet<Author> authors;
     public static HashSet<Album> albums;
     public static HashSet<Song> songs;

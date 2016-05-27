@@ -1,18 +1,17 @@
-package com.adventorium.lab7;
+package com.adventorium.lab7.utils;
 
-import com.adventorium.lab7.serializable.*;
+import com.adventorium.lab7.music.Author;
+import com.adventorium.lab7.music.Album;
+import com.adventorium.lab7.music.Song;
 
 import java.io.File;
-import java.util.AbstractCollection;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Андрей on 25.05.2016.
  */
 public class SerializableStart {
-    SerializableStart() {
+    public SerializableStart() {
         System.out.println(System.getProperty("user.home") + "\\Downloads\\OutTestForSerializable.txt");
 
         Random random = new Random();
@@ -62,22 +61,29 @@ public class SerializableStart {
             fileOutForSerializableDeser.delete();
         }
 
-        //Object[] allData = ArrayUtils.addAll(authors.toArray(), albums.toArray(), songs.toArray());
-
-        Object[] allData = createOneArray(authors,albums,songs);
-
+        EntityForSerializator[] allData = createOneArray(authors, albums, songs);
         Serializator.write(allData, fileOutForSerializable);
         Deserializator.read(fileOutForSerializable);
 
-        allData = createOneArray(Deserializator.authors,Deserializator.albums,Deserializator.songs);
+        allData = createOneArray(Deserializator.authors, Deserializator.albums, Deserializator.songs);
         Serializator.write(allData, fileOutForSerializableDeser);
     }
 
-    public Object[] createOneArray(AbstractCollection<?> authors, AbstractCollection<?> albums, AbstractCollection<?> songs){
-        Object[] allData = new Object[authors.toArray().length + albums.toArray().length + songs.toArray().length];
-        System.arraycopy(authors.toArray(), 0, allData, 0, authors.toArray().length);
-        System.arraycopy(albums.toArray(), 0, allData, authors.toArray().length, albums.toArray().length);
-        System.arraycopy(songs.toArray(), 0, allData, authors.toArray().length + albums.toArray().length, songs.toArray().length);
-        return allData;
+    public EntityForSerializator[] createOneArray(Collection<Author> authors, Collection<Album> albums, Collection<Song> songs) {
+        EntityForSerializator[] entities = new EntityForSerializator[authors.toArray().length + albums.toArray().length + songs.toArray().length];
+        int entityIterator = 0;
+        for (Author au : authors) {
+            entities[entityIterator] = new EntityForSerializator(au);
+            entityIterator++;
+        }
+        for (Album al : albums) {
+            entities[entityIterator] = new EntityForSerializator(al);
+            entityIterator++;
+        }
+        for (Song sg : songs) {
+            entities[entityIterator] = new EntityForSerializator(sg);
+            entityIterator++;
+        }
+        return entities;
     }
 }
