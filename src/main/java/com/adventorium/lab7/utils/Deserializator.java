@@ -55,11 +55,11 @@ public class Deserializator {
                     Collection[] links = ent.getLinks();
                     HashSet<Integer> albumsID = new HashSet<>(links[0]);
                     for (Integer iterator : albumsID) {
-                        for (Album al : albums) {
-                            if (iterator == al.getID()) {
-                                for (Author au : authors) {
-                                    if (au.getID() == ent.getId()) {
-                                        au.addAlbum(al);
+                        for (Album album : albums) {
+                            if (iterator == album.getID()) {
+                                for (Author author : authors) {
+                                    if (author.getID() == ent.getId()) {
+                                        author.addAlbum(album);
                                     }
                                 }
                             }
@@ -70,22 +70,22 @@ public class Deserializator {
                     HashSet<Integer> authorsID = new HashSet<>(links[0]);
                     HashSet<Integer> songsID = new HashSet<>(links[1]);
                     for (Integer iterator : authorsID) {
-                        for (Author au : authors) {
-                            if (iterator == au.getID()) {
-                                for (Album al : albums) {
-                                    if (al.getID() == ent.getId()) {
-                                        al.addAuthor(au);
+                        for (Author author : authors) {
+                            if (iterator == author.getID()) {
+                                for (Album album : albums) {
+                                    if (album.getID() == ent.getId()) {
+                                        album.addAuthor(author);
                                     }
                                 }
                             }
                         }
                     }
                     for (Integer iterator : songsID) {
-                        for (Song sg : songs) {
-                            if (iterator == sg.getID()) {
-                                for (Album al : albums) {
-                                    if (al.getID() == ent.getId()) {
-                                        al.addSong(sg);
+                        for (Song song : songs) {
+                            if (iterator == song.getID()) {
+                                for (Album album : albums) {
+                                    if (album.getID() == ent.getId()) {
+                                        album.addSong(song);
                                     }
                                 }
                             }
@@ -95,11 +95,11 @@ public class Deserializator {
                     Collection[] links = ent.getLinks();
                     HashSet<Integer> albumsID = new HashSet<>(links[0]);
                     for (Integer iterator : albumsID) {
-                        for (Album al : albums) {
-                            if (iterator == al.getID()) {
-                                for (Song sg : songs) {
-                                    if (sg.getID() == ent.getId()) {
-                                        sg.addAlbum(al);
+                        for (Album album : albums) {
+                            if (iterator == album.getID()) {
+                                for (Song song : songs) {
+                                    if (song.getID() == ent.getId()) {
+                                        song.addAlbum(album);
                                     }
                                 }
                             }

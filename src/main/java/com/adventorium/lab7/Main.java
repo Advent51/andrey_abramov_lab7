@@ -9,5 +9,6 @@ import com.adventorium.lab7.utils.LabStarter;
 public class Main {
     public static void main(String[] args) {
         LabStarter labStarter = new LabStarter();
+        labStarter.startThisLab();
     }
 }

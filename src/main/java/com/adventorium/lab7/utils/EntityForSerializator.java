@@ -16,7 +16,7 @@ public class EntityForSerializator implements Serializable {
     private Collection[] links;
     private long duration;
 
-    public EntityForSerializator(MusicStuff object) {
+    public EntityForSerializator(MusicStuffInterface object) {
         this.type = object.getClass();
         this.id = object.getID();
         this.name = object.getName();

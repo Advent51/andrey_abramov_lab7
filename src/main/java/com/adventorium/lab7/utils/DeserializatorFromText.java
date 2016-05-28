@@ -1,4 +1,8 @@
-package com.adventorium.lab7.music;
+package com.adventorium.lab7.utils;
+
+import com.adventorium.lab7.music.Album;
+import com.adventorium.lab7.music.Author;
+import com.adventorium.lab7.music.Song;
 
 import java.io.*;
 import java.util.HashSet;
@@ -11,7 +15,7 @@ public class DeserializatorFromText {
     private static HashSet<Album> albums;
     private static HashSet<Song> songs;
 
-    public static HashSet<Author> getAuthors(){
+    public static HashSet<Author> getAuthors() {
         return authors;
     }
 
@@ -58,13 +62,13 @@ public class DeserializatorFromText {
                                 readedLine = in.readLine();
                             }
                         }
-                        if (album.songs.isEmpty()) {
+                        if (album.getSongs().isEmpty()) {
                             albums.remove(album);
                         } else {
                             author.addAlbum(album);
                         }
                     }
-                    if (author.albums.isEmpty()) {
+                    if (author.getAlbums().isEmpty()) {
                         authors.remove(author);
                     } else {
                         authors.add(author);

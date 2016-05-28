@@ -6,7 +6,7 @@ import java.util.HashSet;
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Author implements MusicStuff {
+public class Author implements MusicStuffInterface {
     private static int nextID;
     private final int id;
     private final String name;
@@ -57,12 +57,22 @@ public class Author implements MusicStuff {
 
     @Override
     public Collection[] getLinks() {
-        HashSet[] ll = new HashSet[1];
-        ll[0] = new HashSet<Integer>();
-        for (Album al : albums) {
-            ll[0].add(al.getID());
+        HashSet[] links = new HashSet[1];
+        links[0] = new HashSet<Integer>();
+        for (Album album : albums) {
+            links[0].add(album.getID());
         }
-        return ll;
+        return links;
+    }
+
+    @Override
+    public String toString() {
+        String string = "Author: " + name;
+        for (Album album : albums) {
+            string += "\n\t" + album.toString();
+        }
+        string += "\n";
+        return string;
     }
 
     @Override

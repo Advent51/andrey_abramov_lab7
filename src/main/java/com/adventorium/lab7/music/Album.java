@@ -6,11 +6,11 @@ import java.util.HashSet;
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Album implements MusicStuff {
+public class Album implements MusicStuffInterface {
     private static int nextID;
     private final int id;
     private final String name;
-    Collection<String> genres;
+    private Collection<String> genres;
     transient Collection<Author> authors;
     transient Collection<Song> songs;
 
@@ -76,16 +76,25 @@ public class Album implements MusicStuff {
 
     @Override
     public Collection[] getLinks() {
-        HashSet[] ll = new HashSet[2];
-        ll[0] = new HashSet<Integer>();
-        for (Author au : authors) {
-            ll[0].add(au.getID());
+        HashSet[] links = new HashSet[2];
+        links[0] = new HashSet<Integer>();
+        for (Author author : authors) {
+            links[0].add(author.getID());
         }
-        ll[1] = new HashSet<Integer>();
-        for (Song sg : songs) {
-            ll[1].add(sg.getID());
+        links[1] = new HashSet<Integer>();
+        for (Song song : songs) {
+            links[1].add(song.getID());
         }
-        return ll;
+        return links;
+    }
+
+    @Override
+    public String toString() {
+        String string = "Album: " + name + "\n\t\tGenre: " + genres;
+        for (Song song : songs) {
+            string += "\n\t\t\t" + song.toString();
+        }
+        return string;
     }
 
     @Override
@@ -99,5 +108,9 @@ public class Album implements MusicStuff {
 
     public Collection<Song> getSongs() {
         return songs;
+    }
+
+    public Collection<String> getGenres() {
+        return genres;
     }
 }

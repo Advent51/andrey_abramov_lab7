@@ -17,7 +17,14 @@ public class ModelCreator {
     private ArrayList<Song> songs;
     private ArrayList<String> genres;
 
-    ModelCreator() {
+    private int numberOfAuthors;
+    private int numberOfAlbums;
+    private int numberOfSongs;
+
+    public ModelCreator(int numberOfAuthors, int numberOfAlbums, int numberOfSongs) {
+        this.numberOfAuthors = numberOfAuthors;
+        this.numberOfAlbums = numberOfAlbums;
+        this.numberOfSongs = numberOfSongs;
         authors = new ArrayList<>();
         albums = new ArrayList<>();
         songs = new ArrayList<>();
@@ -36,16 +43,16 @@ public class ModelCreator {
                         + songs.toArray().length
                 ];
         int entityIterator = 0;
-        for (Author au : authors) {
-            entities[entityIterator] = new EntityForSerializator(au);
+        for (Author author : authors) {
+            entities[entityIterator] = new EntityForSerializator(author);
             entityIterator++;
         }
-        for (Album al : albums) {
-            entities[entityIterator] = new EntityForSerializator(al);
+        for (Album album : albums) {
+            entities[entityIterator] = new EntityForSerializator(album);
             entityIterator++;
         }
-        for (Song sg : songs) {
-            entities[entityIterator] = new EntityForSerializator(sg);
+        for (Song song : songs) {
+            entities[entityIterator] = new EntityForSerializator(song);
             entityIterator++;
         }
         return entities;
@@ -61,20 +68,20 @@ public class ModelCreator {
         genres.add("metal");
         genres.add("sludge");
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < numberOfAuthors; i++) {
             authors.add(new Author("Author " + i));
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < numberOfAlbums; i++) {
             albums.add(new Album("Album " + i));
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < numberOfSongs; i++) {
             songs.add(new Song("Song " + i, random.nextInt(1000)));
         }
 
         for (Album album : albums) {
-            album.addAuthor(authors.get(random.nextInt(10)));
+            album.addAuthor(authors.get(random.nextInt(numberOfAuthors)));
             int genreNums = random.nextInt(3) + 1;
             for (int i = 0; i < genreNums; i++) {
                 album.addGenre(genres.get(random.nextInt(4)));
@@ -82,7 +89,7 @@ public class ModelCreator {
         }
 
         for (Song song : songs) {
-            song.addAlbum(albums.get(random.nextInt(10)));
+            song.addAlbum(albums.get(random.nextInt(numberOfAlbums)));
         }
     }
 }

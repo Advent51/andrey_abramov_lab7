@@ -5,9 +5,9 @@ import java.io.*;
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Serializator {
-    public static void write(Object[] object, File fileOut) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileOut)))) {
+public class Serializator implements SerializatorInterface {
+    public void write(Object[] object, OutputStream outputStream) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(outputStream))) {
 
             out.writeInt(object.length);
             for (Object obj : object) {
@@ -20,8 +20,8 @@ public class Serializator {
         }
     }
 
-    public static void write(Object object, File fileOut) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileOut)))) {
+    public void write(Object object, OutputStream outputStream) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(outputStream))) {
             out.writeInt(1);
             out.writeObject(object);
             out.flush();

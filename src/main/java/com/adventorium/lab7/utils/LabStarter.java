@@ -1,9 +1,6 @@
 package com.adventorium.lab7.utils;
 
-import com.adventorium.lab7.music.*;
-
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -12,25 +9,27 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * Created by Андрей on 25.05.2016.
  */
 public class LabStarter {
+
+    private String USER_HOME;
+    private SerializatorInterface serializator;
+
     public LabStarter() {
-        ModelCreator mc = new ModelCreator();
+        USER_HOME = System.getProperty("user.home");
+    }
 
-        File fileOut = new File(System.getProperty("user.home") + "/Downloads/OutTest.txt");
-        File fileOutDeser = new File(System.getProperty("user.home") + "/Downloads/OutTestDeser.txt");
+    public void startThisLab() {
 
-        if (fileOut.exists()) {
-            fileOut.delete();
-        }
+        ModelCreator mc = new ModelCreator(10, 10, 100);
+        serializator = new SerializatorIntoText();
 
-        if (fileOutDeser.exists()) {
-            fileOutDeser.delete();
-        }
+        File fileOut = createFile("OutTest.txt");
+        File fileOutDeser = createFile("OutTestDeser.txt");
 
-        mc.getAuthors().forEach((object) -> SerializatorIntoText.write(object, fileOut));
+        mc.getAuthors().forEach((object) -> startSerialization(object, fileOut, serializator));
         DeserializatorFromText.read(fileOut);
-        DeserializatorFromText.getAuthors().forEach((object) -> SerializatorIntoText.write(object, fileOutDeser));
+        DeserializatorFromText.getAuthors().forEach((object) -> startSerialization(object, fileOutDeser, serializator));
 
-        File fileOutDamaged = new File(System.getProperty("user.home") + "/Downloads/OutTestDamaged.txt");
+        File fileOutDamaged = new File(USER_HOME + "/Downloads/OutTestDamaged.txt");
         if (!fileOutDamaged.exists()) {
             try {
                 Files.copy(fileOut.toPath(), fileOutDamaged.toPath(), REPLACE_EXISTING);
@@ -39,31 +38,48 @@ public class LabStarter {
             }
         }
 
-        damagedFileDeserialization();
+        File fileOutDamagedDeser = createFile("OutTestDamagedDeser.txt");
 
-        File fileOutForSerializable = new File(System.getProperty("user.home") + "/Downloads/OutTestForSerializable.txt");
-        File fileOutForSerializableDeser = new File(System.getProperty("user.home") + "/Downloads/OutTestForSerializableDeser.txt");
+        DeserializatorFromText.read(fileOutDamaged);
+        DeserializatorFromText.getAuthors().forEach((object) -> startSerialization(object, fileOutDamagedDeser, serializator));
 
-        if (fileOutForSerializable.exists()) {
-            fileOutForSerializable.delete();
-        }
+        serializator = new Serializator();
 
-        if (fileOutForSerializableDeser.exists()) {
-            fileOutForSerializableDeser.delete();
-        }
+        File fileOutForSerializable = createFile("OutTestForSerializable.txt");
+        File fileOutForSerializableDeser = createFile("OutTestForSerializableDeser.txt");
 
-        Serializator.write(mc.getEntityForSerializator(), fileOutForSerializable);
+        startSerialization(mc.getEntityForSerializator(), fileOutForSerializable, serializator);
         Deserializator.read(fileOutForSerializable);
-        Serializator.write(mc.getEntityForSerializator(), fileOutForSerializableDeser);
+        startSerialization(mc.getEntityForSerializator(), fileOutForSerializableDeser, serializator);
     }
 
-    private void damagedFileDeserialization() {
-        File fileOutDamaged = new File(System.getProperty("user.home") + "/Downloads/OutTestDamaged.txt");
-        File fileOutDamagedDeser = new File(System.getProperty("user.home") + "/Downloads/OutTestDamagedDeser.txt");
-        if (fileOutDamagedDeser.exists()) {
-            fileOutDamagedDeser.delete();
+    private File createFile(String fileName) {
+        File file = new File(USER_HOME + "/Downloads/" + fileName);
+        if (file.exists()) {
+            file.delete();
         }
-        DeserializatorFromText.read(fileOutDamaged);
-        DeserializatorFromText.getAuthors().forEach((object) -> SerializatorIntoText.write(object, fileOutDamagedDeser));
+        return file;
+    }
+
+    private FileOutputStream startSerialization(Object object, File file, SerializatorInterface serializator) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(file, true);
+            serializator.write(object, fileOutputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return fileOutputStream;
+    }
+
+    private FileOutputStream startSerialization(Object[] object, File file, SerializatorInterface serializator) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(file);
+            serializator.write(object, fileOutputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return fileOutputStream;
     }
 }
