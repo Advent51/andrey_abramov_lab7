@@ -1,20 +1,19 @@
 package com.adventorium.lab7.music;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Author implements MusicStuffInterface {
-    private static int nextID;
-    private final int id;
+public class Author implements MusicStuff, Serializable {
     private final String name;
     transient Collection<Album> albums;
 
     @Override
     public int hashCode() {
-        return id;
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
@@ -35,13 +34,6 @@ public class Author implements MusicStuffInterface {
 
     public Author(String name) {
         this.name = name;
-        id = ++nextID;
-        albums = new HashSet<>();
-    }
-
-    public Author(String name, int id) {
-        this.name = name;
-        this.id = id;
         albums = new HashSet<>();
     }
 
@@ -50,29 +42,16 @@ public class Author implements MusicStuffInterface {
         album.authors.add(this);
     }
 
-    @Override
-    public int getID() {
-        return this.id;
-    }
-
-    @Override
-    public Collection[] getLinks() {
-        HashSet[] links = new HashSet[1];
-        links[0] = new HashSet<Integer>();
+    public void addAlbum(Collection<Album> albums) {
+        this.albums.addAll(albums);
         for (Album album : albums) {
-            links[0].add(album.getID());
+            album.authors.add(this);
         }
-        return links;
     }
 
     @Override
     public String toString() {
-        String string = "Author: " + name;
-        for (Album album : albums) {
-            string += "\n\t" + album.toString();
-        }
-        string += "\n";
-        return string;
+        return name;
     }
 
     @Override
@@ -82,5 +61,9 @@ public class Author implements MusicStuffInterface {
 
     public Collection<Album> getAlbums() {
         return albums;
+    }
+
+    public void setAlbums(Collection<Album> albums) {
+        this.albums = albums;
     }
 }

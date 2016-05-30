@@ -1,21 +1,20 @@
 package com.adventorium.lab7.music;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Song implements MusicStuffInterface {
-    private static int nextID;
-    private final int id;
+public class Song implements MusicStuff, Serializable {
     private final String name;
     private long duration;
     transient Collection<Album> albums;
 
     @Override
     public int hashCode() {
-        return id;
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
@@ -38,20 +37,11 @@ public class Song implements MusicStuffInterface {
 
     public Song(String name) {
         this.name = name;
-        id = ++nextID;
         albums = new HashSet<>();
     }
 
     public Song(String name, long duration) {
         this.name = name;
-        id = ++nextID;
-        this.duration = duration;
-        albums = new HashSet<>();
-    }
-
-    public Song(String name, int id, long duration) {
-        this.name = name;
-        this.id = id;
         this.duration = duration;
         albums = new HashSet<>();
     }
@@ -61,25 +51,16 @@ public class Song implements MusicStuffInterface {
         album.songs.add(this);
     }
 
-    @Override
-    public int getID() {
-        return this.id;
-    }
-
-    @Override
-    public Collection[] getLinks() {
-        HashSet[] links = new HashSet[1];
-        links[0] = new HashSet<Integer>();
+    public void addAlbum(Collection<Album> albums) {
+        this.albums.addAll(albums);
         for (Album album : albums) {
-            links[0].add(album.getID());
+            album.songs.add(this);
         }
-        return links;
     }
 
     @Override
     public String toString() {
-        String string = "Song: " + name + "\n\t\t\t\tDuration: " + duration;
-        return string;
+        return name;
     }
 
     @Override
@@ -89,6 +70,10 @@ public class Song implements MusicStuffInterface {
 
     public Collection<Album> getAlbums() {
         return albums;
+    }
+
+    public void setAlbums(Collection<Album> albums) {
+        this.albums = albums;
     }
 
     public void addDuration(int duration) {

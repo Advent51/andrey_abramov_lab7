@@ -5,8 +5,6 @@ import java.util.Collection;
 /**
  * Created by Андрей on 27.05.2016.
  */
-public interface MusicStuffInterface {
-    int getID();
+public interface MusicStuff {
     String getName();
-    Collection[] getLinks();
 }

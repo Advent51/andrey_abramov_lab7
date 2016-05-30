@@ -5,6 +5,7 @@ import com.adventorium.lab7.music.Author;
 import com.adventorium.lab7.music.Song;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -36,23 +37,36 @@ public class ModelCreator {
         return authors;
     }
 
-    public EntityForSerializator[] getEntityForSerializator() {
-        EntityForSerializator[] entities = new EntityForSerializator[
+    public ArrayList<Album> getAlbums() {
+        return albums;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
+    public ArrayList<String> getGenres() {
+        return genres;
+    }
+
+    public static MusicSerializableEntity[] getEntitiesArray(Collection<Author> authors, Collection<Album> albums,
+                                                             Collection<Song> songs) {
+        MusicSerializableEntity[] entities = new MusicSerializableEntity[
                 authors.toArray().length
                         + albums.toArray().length
                         + songs.toArray().length
                 ];
         int entityIterator = 0;
         for (Author author : authors) {
-            entities[entityIterator] = new EntityForSerializator(author);
+            entities[entityIterator] = new MusicSerializableEntity(author);
             entityIterator++;
         }
         for (Album album : albums) {
-            entities[entityIterator] = new EntityForSerializator(album);
+            entities[entityIterator] = new MusicSerializableEntity(album);
             entityIterator++;
         }
         for (Song song : songs) {
-            entities[entityIterator] = new EntityForSerializator(song);
+            entities[entityIterator] = new MusicSerializableEntity(song);
             entityIterator++;
         }
         return entities;

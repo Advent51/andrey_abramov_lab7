@@ -1,14 +1,15 @@
 package com.adventorium.lab7.music;
 
+import com.adventorium.lab7.utils.MusicSerializableEntity;
+
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
  * Created by Андрей on 25.05.2016.
  */
-public class Album implements MusicStuffInterface {
-    private static int nextID;
-    private final int id;
+public class Album implements MusicStuff, Serializable {
     private final String name;
     private Collection<String> genres;
     transient Collection<Author> authors;
@@ -16,7 +17,7 @@ public class Album implements MusicStuffInterface {
 
     @Override
     public int hashCode() {
-        return id;
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
@@ -41,15 +42,6 @@ public class Album implements MusicStuffInterface {
 
     public Album(String name) {
         this.name = name;
-        id = ++nextID;
-        genres = new HashSet<>();
-        authors = new HashSet<>();
-        songs = new HashSet<>();
-    }
-
-    public Album(String name, int id) {
-        this.name = name;
-        this.id = id;
         genres = new HashSet<>();
         authors = new HashSet<>();
         songs = new HashSet<>();
@@ -59,9 +51,20 @@ public class Album implements MusicStuffInterface {
         this.genres.add(genre);
     }
 
+    public void addGenre(Collection<String> genre) {
+        this.genres.addAll(genre);
+    }
+
     public void addAuthor(Author author) {
         this.authors.add(author);
         author.albums.add(this);
+    }
+
+    public void addAuthor(Collection<Author> authors) {
+        this.authors.addAll(authors);
+        for (Author author : authors) {
+            author.albums.add(this);
+        }
     }
 
     public void addSong(Song song) {
@@ -69,32 +72,16 @@ public class Album implements MusicStuffInterface {
         song.albums.add(this);
     }
 
-    @Override
-    public int getID() {
-        return this.id;
-    }
-
-    @Override
-    public Collection[] getLinks() {
-        HashSet[] links = new HashSet[2];
-        links[0] = new HashSet<Integer>();
-        for (Author author : authors) {
-            links[0].add(author.getID());
-        }
-        links[1] = new HashSet<Integer>();
+    public void addSong(Collection<Song> songs) {
+        this.songs.addAll(songs);
         for (Song song : songs) {
-            links[1].add(song.getID());
+            song.albums.add(this);
         }
-        return links;
     }
 
     @Override
     public String toString() {
-        String string = "Album: " + name + "\n\t\tGenre: " + genres;
-        for (Song song : songs) {
-            string += "\n\t\t\t" + song.toString();
-        }
-        return string;
+        return name;
     }
 
     @Override
@@ -106,8 +93,16 @@ public class Album implements MusicStuffInterface {
         return authors;
     }
 
+    public void setAuthors(Collection<Author> authors) {
+        this.authors = authors;
+    }
+
     public Collection<Song> getSongs() {
         return songs;
+    }
+
+    public void setSongs(Collection<Song> songs) {
+        this.songs = songs;
     }
 
     public Collection<String> getGenres() {
