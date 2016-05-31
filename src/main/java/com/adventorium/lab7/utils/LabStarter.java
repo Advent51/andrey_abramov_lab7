@@ -18,6 +18,10 @@ public class LabStarter {
     private static final String USER_HOME = System.getProperty("user.home");
     private Serializator serializator;
 
+    private File fileOut;
+    private FileOutputStream fileOutputStream;
+    private FileInputStream fileInputStream;
+
     public void startThisLab() {
 
         try {
@@ -25,54 +29,15 @@ public class LabStarter {
             ModelCreator mc = new ModelCreator(10, 10, 100);
             serializator = new TextSerializator();
 
-            File fileOut;
-            FileOutputStream fileOutputStream;
-            FileInputStream fileInputStream;
-
-            fileOut = createFileWithExistsRemoving("OutTest.txt");
-            fileOutputStream = new FileOutputStream(fileOut, true);
-            for (Author author : mc.getAuthors()) {
-                serializator.write(author, fileOutputStream);
-            }
-
-            fileInputStream = new FileInputStream(fileOut);
-            serializator.read(fileInputStream);
-
-            fileOut = createFileWithExistsRemoving("OutTestDeser.txt");
-            fileOutputStream = new FileOutputStream(fileOut, true);
-            for (Author author : TextSerializator.getAuthors()) {
-                serializator.write(author, fileOutputStream);
-            }
-
-            File fileOutDamaged = new File(USER_HOME + "/Downloads/OutTestDamaged.txt");
-            if (!fileOutDamaged.exists()) {
-                try {
-                    Files.copy(fileOut.toPath(), fileOutDamaged.toPath(), REPLACE_EXISTING);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            fileInputStream = new FileInputStream(fileOutDamaged);
-            serializator.read(fileInputStream);
-
-            fileOut = createFileWithExistsRemoving("OutTestDamagedDeser.txt");
-            fileOutputStream = new FileOutputStream(fileOut, true);
-            for (Author author : TextSerializator.getAuthors()) {
-                serializator.write(author, fileOutputStream);
-            }
+            makeTestFile(mc);
+            makeDeserTestFile();
+            makeDamagedTestFile();
+            makeDeserDamagedTestFile();
 
             serializator = new BinarySerializator();
 
-            fileOut = createFileWithExistsRemoving("OutTestForSerializable.txt");
-            fileOutputStream = new FileOutputStream(fileOut, true);
-            serializator.write(ModelCreator.getEntitiesArray(mc.getAuthors(), mc.getAlbums(), mc.getSongs()), fileOutputStream);
-
-            File fileOutForSerializableDeser = createFileWithExistsRemoving("OutTestForSerializableDeser.txt");
-            fileOutputStream = new FileOutputStream(fileOutForSerializableDeser, true);
-            fileInputStream = new FileInputStream(fileOut);
-            serializator.write(serializator.read(fileInputStream), fileOutputStream);
-
+            makeBinaryTestFile(mc);
+            makeDeserBinaryTestFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,5 +49,55 @@ public class LabStarter {
             file.delete();
         }
         return file;
+    }
+
+    private void makeTestFile(ModelCreator mc) throws FileNotFoundException{
+        fileOut = createFileWithExistsRemoving("OutTest.txt");
+        fileOutputStream = new FileOutputStream(fileOut, true);
+        for (Author author : mc.getAuthors()) {
+            serializator.write(author, fileOutputStream);
+        }
+    }
+
+    private void makeDeserTestFile() throws FileNotFoundException{
+        fileInputStream = new FileInputStream(fileOut);
+        fileOut = createFileWithExistsRemoving("OutTestDeser.txt");
+        fileOutputStream = new FileOutputStream(fileOut, true);
+        for (Author author : serializator.read(fileInputStream)) {
+            serializator.write(author, fileOutputStream);
+        }
+    }
+
+    private void makeDamagedTestFile() throws FileNotFoundException{
+        File fileOutDamaged = new File(USER_HOME + "/Downloads/OutTestDamaged.txt");
+        if (!fileOutDamaged.exists()) {
+            try {
+                Files.copy(fileOut.toPath(), fileOutDamaged.toPath(), REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        fileInputStream = new FileInputStream(fileOutDamaged);
+    }
+
+    private void makeDeserDamagedTestFile() throws FileNotFoundException{
+        fileOut = createFileWithExistsRemoving("OutTestDamagedDeser.txt");
+        fileOutputStream = new FileOutputStream(fileOut, true);
+        for (Author author : serializator.read(fileInputStream)) {
+            serializator.write(author, fileOutputStream);
+        }
+    }
+
+    private void makeBinaryTestFile(ModelCreator mc) throws FileNotFoundException{
+        fileOut = createFileWithExistsRemoving("OutTestForSerializable.txt");
+        fileOutputStream = new FileOutputStream(fileOut, true);
+        serializator.write(ModelCreator.getEntitiesArray(mc.getAuthors(), mc.getAlbums(), mc.getSongs()), fileOutputStream);
+    }
+
+    private void makeDeserBinaryTestFile() throws FileNotFoundException{
+        File fileOutForSerializableDeser = createFileWithExistsRemoving("OutTestForSerializableDeser.txt");
+        fileOutputStream = new FileOutputStream(fileOutForSerializableDeser, true);
+        fileInputStream = new FileInputStream(fileOut);
+        serializator.write(serializator.read(fileInputStream), fileOutputStream);
     }
 }

@@ -14,9 +14,9 @@ import java.util.HashSet;
  */
 public class TextSerializator implements Serializator {
 
-    private static HashSet<Author> authors = new HashSet<>();
-    private static HashSet<Album> albums = new HashSet<>();
-    private static HashSet<Song> songs = new HashSet<>();
+    HashSet<Author> authors;
+    HashSet<Album> albums;
+    HashSet<Song> songs;
 
     private static final String AUTHOR_INTRO = "Author: ";
     private static final String ALBUM_INTRO = "\tAlbum: ";
@@ -29,6 +29,12 @@ public class TextSerializator implements Serializator {
     private static final int GENRE_INTRO_LENGTH = GENRE_INTRO.length();
     private static final int SONG_INTRO_LENGTH = SONG_INTRO.length();
     private static final int DURATION_INTRO_LENGTH = DURATION_INTRO.length();
+
+    public TextSerializator(){
+        authors = new HashSet<>();
+        albums = new HashSet<>();
+        songs = new HashSet<>();
+    }
 
     public void write(Object object, OutputStream outputStream) {
         PrintStream out = new PrintStream(outputStream, false);
@@ -62,14 +68,14 @@ public class TextSerializator implements Serializator {
         }
     }
 
-    public MusicSerializableEntity[] read(InputStream inputStream) {
+    public Collection<Author> read(InputStream inputStream) {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
             String readLine = in.readLine();
             readAuthor(readLine, in);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ModelCreator.getEntitiesArray(authors, albums, songs);
+        return authors;
     }
 
     private void readAuthor(String readLine, BufferedReader in) throws IOException {
@@ -122,7 +128,7 @@ public class TextSerializator implements Serializator {
         }
     }
 
-        public static Collection<Author> getAuthors () {
+        public Collection<Author> getAuthors () {
             return authors;
         }
     }

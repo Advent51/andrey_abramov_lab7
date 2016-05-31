@@ -39,7 +39,7 @@ public class BinarySerializator implements Serializator {
         }
     }
 
-    public MusicSerializableEntity[] read(InputStream inputStream) {
+    public Collection<Author> read(InputStream inputStream) {
 
         Collection<Author> authors = new HashSet<>();
         Collection<Album> albums = new HashSet<>();
@@ -68,7 +68,7 @@ public class BinarySerializator implements Serializator {
         removeEmptyAlbum(albums);
         removeEmptyAuthor(authors);
 
-        return ModelCreator.getEntitiesArray(authors, albums, songs);
+        return authors;
 
     }
 
