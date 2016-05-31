@@ -14,9 +14,9 @@ import java.util.HashSet;
  */
 public class TextSerializator implements Serializator {
 
-    HashSet<Author> authors;
-    HashSet<Album> albums;
-    HashSet<Song> songs;
+    Collection<Author> authors;
+    Collection<Album> albums;
+    Collection<Song> songs;
 
     private static final String AUTHOR_INTRO = "Author: ";
     private static final String ALBUM_INTRO = "\tAlbum: ";
