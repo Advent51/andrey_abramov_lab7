@@ -1,6 +1,9 @@
 package com.adventorium.lab7.utils;
 
 import com.adventorium.lab7.music.Author;
+import com.adventorium.lab7.utils.serializator.BinarySerializator;
+import com.adventorium.lab7.utils.serializator.Serializator;
+import com.adventorium.lab7.utils.serializator.TextSerializator;
 
 import java.io.*;
 import java.nio.file.Files;

@@ -1,7 +1,5 @@
 package com.adventorium.lab7.music;
 
-import com.adventorium.lab7.utils.MusicSerializableEntity;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;

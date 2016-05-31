@@ -3,6 +3,7 @@ package com.adventorium.lab7.utils;
 import com.adventorium.lab7.music.Album;
 import com.adventorium.lab7.music.Author;
 import com.adventorium.lab7.music.Song;
+import com.adventorium.lab7.utils.serializator.MusicSerializableEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;

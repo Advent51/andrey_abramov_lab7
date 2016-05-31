@@ -1,4 +1,4 @@
-package com.adventorium.lab7.utils;
+package com.adventorium.lab7.utils.serializator;
 
 import java.io.InputStream;
 import java.io.OutputStream;

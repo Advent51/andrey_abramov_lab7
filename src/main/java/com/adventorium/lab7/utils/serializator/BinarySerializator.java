@@ -1,8 +1,9 @@
-package com.adventorium.lab7.utils;
+package com.adventorium.lab7.utils.serializator;
 
 import com.adventorium.lab7.music.Album;
 import com.adventorium.lab7.music.Author;
 import com.adventorium.lab7.music.Song;
+import com.adventorium.lab7.utils.ModelCreator;
 
 import java.io.*;
 import java.util.Collection;

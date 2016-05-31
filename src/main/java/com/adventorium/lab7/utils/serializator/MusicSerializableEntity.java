@@ -1,4 +1,4 @@
-package com.adventorium.lab7.utils;
+package com.adventorium.lab7.utils.serializator;
 
 import com.adventorium.lab7.music.*;
 import com.adventorium.lab7.music.Song;
@@ -13,10 +13,10 @@ import java.util.Collection;
 public class MusicSerializableEntity implements Serializable {
     private final String name;
     private final Class type;
-    private ArrayList<SerializableAuthor> authors;
-    private ArrayList<SerializableAlbum> albums;
-    private ArrayList<SerializableSong> songs;
-    private ArrayList<String> genres;
+    private Collection<SerializableAuthor> authors;
+    private Collection<SerializableAlbum> albums;
+    private Collection<SerializableSong> songs;
+    private Collection<String> genres;
     private long duration;
 
     private class SerializableAuthor extends Author implements Serializable {
